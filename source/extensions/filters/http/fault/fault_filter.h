@@ -61,6 +61,7 @@ private:
   std::vector<Router::ConfigUtility::HeaderData> fault_filter_headers_;
   std::unordered_set<std::string> downstream_nodes_{}; // Inject failures for specific downstream
 };
+typedef std::shared_ptr<const FaultSettings> FaultSettingsConstSharedPtr;
 
 /**
  * Configuration for the fault filter.

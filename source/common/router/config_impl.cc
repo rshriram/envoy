@@ -524,7 +524,7 @@ void RouteEntryImplBase::validateClusters(Upstream::ClusterManager& cm) const {
   }
 }
 
-const RouteSpecificFilterConfig*
+const RouteSpecificFilterConfigConstSharedPtr
 RouteEntryImplBase::perFilterConfig(const std::string& name) const {
   return per_filter_configs_.get(name);
 }
@@ -552,7 +552,7 @@ RouteEntryImplBase::WeightedClusterEntry::WeightedClusterEntry(
   }
 }
 
-const RouteSpecificFilterConfig*
+const RouteSpecificFilterConfigConstSharedPtr
 RouteEntryImplBase::WeightedClusterEntry::perFilterConfig(const std::string& name) const {
   const auto cfg = per_filter_configs_.get(name);
   return cfg != nullptr ? cfg : DynamicRouteEntry::perFilterConfig(name);
@@ -733,7 +733,7 @@ VirtualHostImpl::VirtualClusterEntry::VirtualClusterEntry(
 
 const Config& VirtualHostImpl::routeConfig() const { return global_route_config_; }
 
-const RouteSpecificFilterConfig* VirtualHostImpl::perFilterConfig(const std::string& name) const {
+const RouteSpecificFilterConfigConstSharedPtr VirtualHostImpl::perFilterConfig(const std::string& name) const {
   return per_filter_configs_.get(name);
 }
 
@@ -893,9 +893,9 @@ PerFilterConfigs::PerFilterConfigs(
   }
 }
 
-const RouteSpecificFilterConfig* PerFilterConfigs::get(const std::string& name) const {
+const RouteSpecificFilterConfigConstSharedPtr PerFilterConfigs::get(const std::string& name) const {
   auto it = configs_.find(name);
-  return it == configs_.end() ? nullptr : it->second.get();
+  return it == configs_.end() ? nullptr : it->second;
 }
 
 } // namespace Router

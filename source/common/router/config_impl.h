@@ -48,7 +48,7 @@ class PerFilterConfigs {
 public:
   PerFilterConfigs(const Protobuf::Map<ProtobufTypes::String, ProtobufWkt::Struct>& configs);
 
-  const RouteSpecificFilterConfig* get(const std::string& name) const;
+  const RouteSpecificFilterConfigConstSharedPtr get(const std::string& name) const;
 
 private:
   std::unordered_map<std::string, RouteSpecificFilterConfigConstSharedPtr> configs_;
@@ -76,7 +76,7 @@ public:
   const DirectResponseEntry* directResponseEntry() const override { return &SSL_REDIRECTOR; }
   const RouteEntry* routeEntry() const override { return nullptr; }
   const Decorator* decorator() const override { return nullptr; }
-  const RouteSpecificFilterConfig* perFilterConfig(const std::string&) const override {
+  const RouteSpecificFilterConfigConstSharedPtr perFilterConfig(const std::string&) const override {
     return nullptr;
   }
 
@@ -132,7 +132,7 @@ public:
   const std::string& name() const override { return name_; }
   const RateLimitPolicy& rateLimitPolicy() const override { return rate_limit_policy_; }
   const Config& routeConfig() const override;
-  const RouteSpecificFilterConfig* perFilterConfig(const std::string&) const override;
+  const RouteSpecificFilterConfigConstSharedPtr perFilterConfig(const std::string&) const override;
 
 private:
   enum class SslRequirements { NONE, EXTERNAL_ONLY, ALL };
@@ -372,7 +372,7 @@ public:
   const DirectResponseEntry* directResponseEntry() const override;
   const RouteEntry* routeEntry() const override;
   const Decorator* decorator() const override { return decorator_.get(); }
-  const RouteSpecificFilterConfig* perFilterConfig(const std::string&) const override;
+  const RouteSpecificFilterConfigConstSharedPtr perFilterConfig(const std::string&) const override;
 
 protected:
   const bool case_sensitive_;
@@ -446,7 +446,7 @@ private:
     const RouteEntry* routeEntry() const override { return this; }
     const Decorator* decorator() const override { return parent_->decorator(); }
 
-    const RouteSpecificFilterConfig* perFilterConfig(const std::string& name) const override {
+    const RouteSpecificFilterConfigConstSharedPtr perFilterConfig(const std::string& name) const override {
       return parent_->perFilterConfig(name);
     };
 
@@ -489,7 +489,7 @@ private:
       DynamicRouteEntry::finalizeResponseHeaders(headers, request_info);
     }
 
-    const RouteSpecificFilterConfig* perFilterConfig(const std::string& name) const override;
+    const RouteSpecificFilterConfigConstSharedPtr perFilterConfig(const std::string& name) const override;
 
   private:
     const std::string runtime_key_;
