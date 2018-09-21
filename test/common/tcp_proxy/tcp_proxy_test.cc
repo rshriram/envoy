@@ -1138,7 +1138,8 @@ TEST_F(TcpProxyRoutingTest, UseClusterFromPerConnectionState) {
       "envoy.tcp_proxy.cluster",
       std::make_unique<PerConnectionTcpProxyConfig>("fake_cluster"));
   ON_CALL(connection_, perConnectionState()).WillByDefault(ReturnRef(per_connection_state));
-  ON_CALL(Const(connection_), perConnectionState()).WillByDefault(ReturnRef(per_connection_state));
+  EXPECT_CALL(Const(connection_), perConnectionState())
+      .WillRepeatedly(ReturnRef(per_connection_state));
 
   // Expect filter to try to open a connection to specified cluster.
   EXPECT_CALL(factory_context_.cluster_manager_,
