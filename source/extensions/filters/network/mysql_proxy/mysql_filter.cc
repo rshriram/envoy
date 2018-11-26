@@ -139,6 +139,7 @@ Network::FilterStatus MySQLFilter::Process(Buffer::Instance& data, bool end_stre
     session_.SetState(MySQLSession::State::MYSQL_REQ_RESP);
     if (!command.RunQueryParser()) {
       // some mysql commands don't have a string to parse
+      session_.SetState(MySQLSession::State::MYSQL_REQ_RESP);
       break;
     }
     // parse a given query
